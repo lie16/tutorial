@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:example/config.dart';
 import 'package:faker_dart/faker_dart.dart';
@@ -85,5 +87,17 @@ class HtProductListController extends State<HtProductListView>
     Jika list-nya ter-refresh,
     Tasks ini selesai
     */
+    var response = await Dio().get(
+      "${AppConfig.baseUrl}/products",
+      options: Options(
+        headers: {
+          "Content-Type": "application/json",
+        },
+      ),
+    );
+    Map obj = response.data;
+    log('$obj');
+    productList = obj["data"];
+    setState(() {});
   }
 }
