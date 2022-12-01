@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:example/config.dart';
 import 'package:example/core.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +54,7 @@ class HtProductCrudListController extends State<HtProductCrudListView>
     );
     Map obj = response.data;
     productList = obj["data"];
+    log('$productList');
     setState(() {});
   }
 

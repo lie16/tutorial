@@ -18,8 +18,10 @@ class HtProductCrudFormView extends StatefulWidget {
   16. ok, bagus lanjut ke point 17
   buka HtProductCrudFormController
   */
+  // final Map item;
   const HtProductCrudFormView({
     Key? key,
+    // required this.item,
   }) : super(key: key);
 
   Widget build(context, HtProductCrudFormController controller) {
