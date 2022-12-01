@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:example/config.dart';
 import 'package:example/shared/util/random_image/random_image.dart';
@@ -97,7 +95,6 @@ class HtProductListController extends State<HtProductListView>
       ),
     );
     Map obj = response.data;
-    log('$obj');
     productList = obj["data"];
     setState(() {});
   }
