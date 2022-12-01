@@ -1,10 +1,18 @@
+import 'dart:developer';
+
 import 'package:example/core.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../config.dart';
 
 class HtProductCrudFormController extends State<HtProductCrudFormView>
     implements MvcController {
   static late HtProductCrudFormController instance;
   late HtProductCrudFormView view;
+  String photo = "";
+  String productName = "";
+  double price = 0.0;
+  String description = "";
 
   @override
   void initState() {
@@ -24,6 +32,11 @@ class HtProductCrudFormController extends State<HtProductCrudFormView>
 
     18. Kembali ke View, masuk ke point 19
     */
+    log('${widget.item}');
+    photo = (widget.item!["photo"]) ?? ''; //todo set to no image
+    productName = (widget.item!["product_name"]) ?? '';
+    price = (widget.item!["price"]) ?? 0;
+    description = (widget.item!["description"]) ?? '';
     super.initState();
   }
 
@@ -102,6 +115,9 @@ class HtProductCrudFormController extends State<HtProductCrudFormView>
 
   Point 33!
   */
+  bool get isEditMode {
+    return widget.item != null;
+  }
 
   save() async {
     if (!formKey.currentState!.validate()) return;
@@ -128,7 +144,41 @@ class HtProductCrudFormController extends State<HtProductCrudFormView>
     Lanjut ke point 10,
     Kembali ke HtProductCrudListController (Controller dari PRODUCT)
     */
+    Response response;
+    if (isEditMode) {
+      var id = widget.item!["id"];
+      response = await Dio().post(
+        "${AppConfig.baseUrl}/products/$id",
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        data: {
+          "photo": photo,
+          "product_name": productName,
+          "price": price,
+          "description": description,
+        },
+      );
+    } else {
+      response = await Dio().post(
+        "${AppConfig.baseUrl}/products",
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+        data: {
+          "photo": photo,
+          "product_name": productName,
+          "price": price,
+          "description": description,
+        },
+      );
+    }
 
+    Map obj = response.data;
     //! ##########################
     //! Jangan edit kode dibawah
     //! ##########################
