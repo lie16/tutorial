@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:example/config.dart';
+import 'package:example/shared/util/random_image/random_image.dart';
 import 'package:faker_dart/faker_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:example/state_util.dart';
@@ -47,7 +48,7 @@ class HtProductListController extends State<HtProductListView>
         },
       ),
       data: {
-        "photo": faker.image.unsplash.food(),
+        "photo": faker.generateRandomImage(),
         "product_name": faker.commerce.productName(),
         "price": faker.commerce.price(
           symbol: "",
