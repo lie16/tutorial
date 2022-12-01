@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:faker_dart/faker_dart.dart';
 import 'package:flutter/material.dart';
 import '../../../../core.dart';
@@ -40,6 +42,7 @@ class LsPosWithTableSelectionController
     Cukup tambahkan 5 saja
     */
     productList = mainStorage.get("products") ?? [];
+    log('$productList');
     setState(() {});
   }
 
@@ -85,7 +88,9 @@ class LsPosWithTableSelectionController
     */
     for (var i = 0; i < productList.length; i++) {
       var product = productList[i];
-      itemTotal += product["qty"] * product["price"];
+      (product["qty"] == null)
+          ? itemTotal = 0
+          : itemTotal += product["qty"] * product["price"];
     }
     return itemTotal;
   }
@@ -131,7 +136,17 @@ class LsPosWithTableSelectionController
     Lalu klik checkout, jika alert Your Order is Complete muncul,
     Maka task kamu sudah selesai!
     */
-
+    Map order = {
+      "created_at": DateTime.now(),
+      "customer": "-",
+      "payment_method": "Cash",
+      "total": total,
+      "table": table,
+      "items": productList,
+    };
+    List orders = await mainStorage.get("orders") ?? [];
+    orders.add(order);
+    mainStorage.put("orders", orders);
     emptyCart();
     await showInfoDialog("Your order is complete!");
     Get.back();

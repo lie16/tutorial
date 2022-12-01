@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:example/core.dart';
 import 'package:faker_dart/faker_dart.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +40,7 @@ class LsPosController extends State<LsPosView> implements MvcController {
     Cukup tambahkan 5 saja
     */
     productList = mainStorage.get("products") ?? [];
+    log('$productList');
     setState(() {});
   }
 
@@ -83,7 +86,9 @@ class LsPosController extends State<LsPosView> implements MvcController {
     */
     for (var i = 0; i < productList.length; i++) {
       var product = productList[i];
-      itemTotal += product["qty"] * product["price"];
+      (product["qty"] == null)
+          ? itemTotal = 0
+          : itemTotal += product["qty"] * product["price"];
     }
     return itemTotal;
   }

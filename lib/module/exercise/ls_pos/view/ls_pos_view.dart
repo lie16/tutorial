@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:faker_dart/faker_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:example/core.dart';
@@ -43,6 +45,7 @@ class LsPosView extends StatefulWidget {
                 itemBuilder: (context, index) {
                   var item = controller.productList[index];
                   item["qty"] = item["qty"] ?? 0;
+                  log('$item');
 
                   return Card(
                     child: ListTile(
