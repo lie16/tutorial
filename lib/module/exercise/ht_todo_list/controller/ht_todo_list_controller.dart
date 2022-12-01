@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:example/config.dart';
 import 'package:example/core.dart';
 import 'package:faker_dart/faker_dart.dart';
@@ -39,6 +41,17 @@ class HtTodoListController extends State<HtTodoListView>
 
     3. Panggil setState setelah-nya, lanjut ke point 4
     */
+    var response = await Dio().get(
+      "${AppConfig.baseUrl}/todos",
+      options: Options(
+        headers: {
+          "Content-Type": "application/json",
+        },
+      ),
+    );
+    Map obj = response.data;
+    todoList = obj["data"];
+    setState(() {});
   }
 
   addTodo() async {
@@ -65,6 +78,21 @@ class HtTodoListController extends State<HtTodoListView>
     hideLoading();
     ###
     */
+    var response = await Dio().post(
+      "${AppConfig.baseUrl}/todos",
+      options: Options(
+        headers: {
+          "Content-Type": "application/json",
+        },
+      ),
+      data: {
+        "todo": faker.lorem.sentence(),
+        "done": false,
+      },
+    );
+    Map obj = response.data;
+    await loadTodoList();
+    hideLoading();
   }
 
   deleteTodo(item) async {
@@ -89,6 +117,19 @@ class HtTodoListController extends State<HtTodoListView>
     hideLoading();
     ###
     */
+    var id = item["id"];
+    var response = await Dio().delete(
+      options: Options(
+        headers: {
+          "Content-Type": "application/json",
+        },
+      ),
+      "${AppConfig.baseUrl}/todos/$id",
+    );
+    print(response.statusCode);
+
+    await loadTodoList();
+    hideLoading();
   }
 
   updateTodo(item) async {
@@ -122,6 +163,22 @@ class HtTodoListController extends State<HtTodoListView>
     15. Test menghapus todo, klik tombol silang. Apakah todo-nya hilang?
     16. Jika ke tiga point di atas bekerja, tasks ini selesai!
     */
+    var id = item["id"];
+    item["done"] = !item["done"];
+    log('$item');
+    var response = await Dio().post(
+      "${AppConfig.baseUrl}/todos/$id",
+      options: Options(
+        headers: {
+          "Content-Type": "application/json",
+        },
+      ),
+      data: item,
+    );
+    Map obj = response.data;
+
+    await loadTodoList();
+    hideLoading();
   }
 
   deleteAll() async {
