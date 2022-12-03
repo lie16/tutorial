@@ -35,7 +35,7 @@ class HtProductCrudFormController extends State<HtProductCrudFormView>
     log('${widget.item}');
     photo = (widget.item!["photo"]) ?? ''; //todo set to no image
     productName = (widget.item!["product_name"]) ?? '';
-    price = (widget.item!["price"]) ?? 0;
+    price = double.parse((widget.item!["price"]) ?? '0');
     description = (widget.item!["description"]) ?? '';
     super.initState();
   }
@@ -116,12 +116,16 @@ class HtProductCrudFormController extends State<HtProductCrudFormView>
   Point 33!
   */
   bool get isEditMode {
-    return widget.item != null;
+    log('${widget.item}');
+    return (widget.item != null && widget.item!.isNotEmpty) ? true : false;
+    // return widget.item != null;
   }
 
   save() async {
     if (!formKey.currentState!.validate()) return;
     showLoading();
+    log('${widget.item}');
+    log('${widget.item!.length}');
 
     /*
     TODO: --
